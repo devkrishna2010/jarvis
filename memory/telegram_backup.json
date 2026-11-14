@@ -1,0 +1,11 @@
+{
+  "last_saturday_backup": "2026-11-14",
+  "history": [
+    {
+      "timestamp": "2026-11-14T11:30:40.002713",
+      "parts_sent": 2,
+      "total_parts": 3
+    }
+  ],
+  "last_backup_date": "2026-11-14"
+}

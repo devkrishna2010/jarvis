@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>J.A.R.V.I.S. — Stark Tactical Holographic HUD</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: radial-gradient(circle at center, #071724 0%, #02070d 100%);
+      color: #00f0ff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px;
+    }
+    header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(0, 240, 255, 0.3);
+      padding-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
+    }
+    .hud-center {
+      position: relative;
+      width: 320px;
+      height: 320px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .arc-reactor {
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      border: 2px dashed rgba(0, 240, 255, 0.4);
+      border-radius: 50%;
+      animation: rotateRing 20s linear infinite;
+    }
+    .arc-inner {
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border: 2px solid rgba(0, 240, 255, 0.7);
+      border-radius: 50%;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.5), inset 0 0 20px rgba(0, 240, 255, 0.5);
+      animation: pulseGlow 2.5s ease-in-out infinite alternate;
+    }
+    .arc-core {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      background: rgba(0, 240, 255, 0.2);
+      border: 2px solid #00f0ff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      letter-spacing: 1px;
+      box-shadow: 0 0 30px #00f0ff;
+    }
+    @keyframes rotateRing {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes pulseGlow {
+      from { transform: scale(0.96); box-shadow: 0 0 15px rgba(0, 240, 255, 0.4); }
+      to { transform: scale(1.04); box-shadow: 0 0 35px rgba(0, 240, 255, 0.9); }
+    }
+    canvas {
+      width: 100%;
+      max-width: 650px;
+      height: 90px;
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      background: rgba(0, 20, 35, 0.4);
+      border-radius: 4px;
+      box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.2);
+    }
+    .telemetry-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      width: 100%;
+      max-width: 900px;
+      text-align: center;
+    }
+    .card {
+      background: rgba(0, 30, 50, 0.4);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      padding: 12px;
+      border-radius: 4px;
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.15);
+    }
+    .card h3 { font-size: 11px; opacity: 0.7; letter-spacing: 1px; }
+    .card p { font-size: 20px; font-weight: bold; margin-top: 4px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div>STARK INDUSTRIES // MARK VII HUD</div>
+    <div id="status">STATUS: ONLINE</div>
+    <div id="user">USER: DEV</div>
+  </header>
+
+  <div class="hud-center">
+    <div class="arc-reactor"></div>
+    <div class="arc-inner"></div>
+    <div class="arc-core">JARVIS</div>
+  </div>
+
+  <canvas id="waveform"></canvas>
+
+  <div class="telemetry-grid">
+    <div class="card"><h3>CPU LOAD</h3><p id="cpu">0.0%</p></div>
+    <div class="card"><h3>MEMORY</h3><p id="ram">0.0%</p></div>
+    <div class="card"><h3>ACOUSTIC MODE</h3><p id="mode">CINEMATIC</p></div>
+    <div class="card"><h3>AFFECTIVE TONE</h3><p id="emotion">COMPOSED</p></div>
+  </div>
+
+  <script>
+    // Audio waveform simulation
+    const canvas = document.getElementById('waveform');
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    let step = 0;
+    function drawWave() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.strokeStyle = '#00f0ff';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      const mid = canvas.height / 2;
+      for (let x = 0; x < canvas.width; x++) {
+        const y = mid + Math.sin((x * 0.04) + step) * 18 * Math.cos((x * 0.01) + step);
+        if (x === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      step += 0.08;
+      requestAnimationFrame(drawWave);
+    }
+    drawWave();
+
+    // Telemetry Poller
+    setInterval(async () => {
+      try {
+        const res = await fetch('/api/telemetry');
+        if (res.ok) {
+          const d = await res.json();
+          document.getElementById('cpu').innerText = d.cpu_percent + '%';
+          document.getElementById('ram').innerText = d.ram_percent + '%';
+          document.getElementById('status').innerText = 'STATUS: ' + d.status.toUpperCase();
+          document.getElementById('mode').innerText = d.mode.toUpperCase();
+          document.getElementById('emotion').innerText = d.emotion.toUpperCase();
+        }
+      } catch (e) {}
+    }, 1500);
+  </script>
+</body>
+</html>
+

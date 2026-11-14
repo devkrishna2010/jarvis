@@ -1,0 +1,64 @@
+{
+  "workshop": {
+    "description": "Engages development workspace and focus audio",
+    "actions": [
+      {
+        "type": "app",
+        "target": "terminal"
+      },
+      {
+        "type": "volume",
+        "action": "volume_down"
+      },
+      {
+        "type": "voice_style",
+        "style": "cinematic"
+      }
+    ],
+    "speech": "Workshop protocol engaged, Dev. Development suite active and acoustic profile calibrated."
+  },
+  "cinema": {
+    "description": "Optimizes system for cinematic media playback",
+    "actions": [
+      {
+        "type": "volume",
+        "action": "volume_up"
+      },
+      {
+        "type": "voice_style",
+        "style": "cinematic"
+      }
+    ],
+    "speech": "Cinema protocol initiated, Dev. Audio dynamics boosted with full harmonic bass presence."
+  },
+  "lockdown": {
+    "description": "Emergency security lockdown and workstation secure",
+    "actions": [
+      {
+        "type": "volume",
+        "action": "mute"
+      },
+      {
+        "type": "screenshot"
+      },
+      {
+        "type": "lock"
+      }
+    ],
+    "speech": "Lockdown protocol engaged, Dev. Workstation secured."
+  },
+  "night_owl": {
+    "description": "Late-night quiet workspace optimization",
+    "actions": [
+      {
+        "type": "volume",
+        "action": "volume_down"
+      },
+      {
+        "type": "voice_style",
+        "style": "night"
+      }
+    ],
+    "speech": "Night owl protocol active, Dev. Audio shifted to subdued acoustic profile. The workshop is at rest, sir."
+  }
+}

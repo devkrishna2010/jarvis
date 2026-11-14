@@ -1,0 +1,30 @@
+{
+  "facts": {
+    "workshop security code": {
+      "value": "Stark-1080",
+      "updated_at": "2026-11-14T11:07:44.862263"
+    },
+    "my favorite suit": {
+      "value": "Mark 7",
+      "updated_at": "2026-11-14T11:07:44.870885"
+    }
+  },
+  "notes": [
+    {
+      "text": "Dev completed the full Mark VII assistant project",
+      "created_at": "2026-11-14T11:11:55.908429"
+    },
+    {
+      "text": "Dev completed the full Mark VII assistant project",
+      "created_at": "2026-11-14T11:12:06.413387"
+    },
+    {
+      "text": "Dev completed the full Mark VII assistant project",
+      "created_at": "2026-11-14T11:35:01.260631"
+    },
+    {
+      "text": "Dev completed the full Mark VII assistant project",
+      "created_at": "2026-11-14T11:38:34.352294"
+    }
+  ]
+}
